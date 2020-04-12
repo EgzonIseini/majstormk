@@ -1,0 +1,97 @@
+<div class="container-fluid" *ngIf="pagedDeal">
+  <div class="d-sm-flex justify-content-between align-items-center mb-4">
+    <h3 class="text-dark mb-0">Сите Договори</h3>
+  </div>
+  <div class="row mb-4">
+    <div class="col-12 mb-2 mb-lg-5">
+      <div class="card shadow">
+        <div class="card-header py-3">
+          <p class="m-0 font-weight-bold">Договори</p>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-8 text-nowrap">
+              <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+                <label>Прикажи&nbsp;
+                  <select
+                    class="form-control-sm form-control form-control-sm custom-select custom-select-sm"
+                    (change)="onTotalElementsToShowChange($event)">
+                    <option value="10" selected="">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>&nbsp;
+                </label>
+              </div>
+            </div>
+            <div class="col-md-4 text-nowrap">
+              <div id="sortBySelectorDiv" class="dataTables_length" aria-controls="dataTable">
+                <label>Подреди по&nbsp;
+                  <select
+                    class="form-control-sm form-control form-control-sm custom-select custom-select-sm"
+                    (change)="onSortedByChange($event)">
+                    <option value="user" selected="">Корсиник</option>
+                    <option value="company">Договорено со</option>
+                    <option value="listing">Оглас</option>
+                    <option value="price">Цена</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+            <table class="table dataTable my-0" id="dataTable">
+              <thead>
+              <tr>
+                <th>Корисник</th>
+                <th>Договорено со</th>
+                <th>За оглас</th>
+                <th>Со цена</th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let deal of pagedDeal.content; let i = index" [class.table-secondary]="i % 2 != 0">
+                <td>{{deal.user.firstName + ' ' + deal.user.lastName.charAt(0) + '.'}}</td>
+                <td>{{deal.company.firstName + ' ' + deal.company.lastName.charAt(0) + '.'}}</td>
+                <td>{{deal.listing.name}}</td>
+                <td>{{deal.price}}</td>
+                <td>
+                  <a class="btn btn-primary" type="button" routerLink="/oglasi/{{deal.listing.id}}">Повеќе</a>
+                </td>
+              </tr>
+              </tbody>
+              <tfoot>
+              <tr>
+                <td><strong>Корисник</strong></td>
+                <td><strong>Договорено со</strong></td>
+                <td><strong>За оглас</strong></td>
+                <td><strong>Со цена</strong></td>
+                <td></td>
+              </tr>
+              </tfoot>
+            </table>
+          </div>
+          <div class="row">
+            <div class="col-md-4 align-self-center">
+              <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Прикажувам:
+                {{pagedDeal.totalElements == 0 ? pagedDeal.number : pagedDeal.number + 1 }} од
+                {{pagedDeal.totalPages}}<br>Вкупно: {{pagedDeal.totalElements}}</p>
+            </div>
+            <div class="col-md-8 d-flex justify-content-end">
+              <pagination
+                [totalItems]="pagedDeal.totalElements"
+                [rotate]="true"
+                [maxSize]="5"
+                [itemsPerPage]="pagesToShow$.getValue()"
+                (pageChanged)="onPageSelected($event)"
+                nextText="&raquo;"
+                previousText="&laquo;">
+              </pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

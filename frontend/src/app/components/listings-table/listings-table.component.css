@@ -1,0 +1,8 @@
+.nav-tabs .active {
+  background-color: #4e73df;
+  color: white;
+}
+
+a.nav-link:hover {
+  cursor: pointer;
+}

@@ -1,0 +1,156 @@
+<div class="alert alert-success" *ngIf="wasRegistrationSuccessful">
+  Ваша регистрација беше успешна. <strong>Ве пренасочуваме</strong> на почетната страна.
+</div>
+
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" *ngIf="!wasRegistrationSuccessful">
+
+  <div class="alert alert-danger">
+    <strong>Напомена!</strong> Мора да ги пополните сите полиња за да се регистрирате. Во спротивно копчето за
+    регистрација ќе ви биде оневозможено.
+  </div>
+
+  <div class="form-group row">
+    <label for="company_name" class="col-3 col-form-label">Име на фирмата</label>
+    <div class="col-9">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text"><i class="fa fa-address-card"></i></div>
+        </div>
+        <input formControlName="name" id="company_name" name="company_name" placeholder="Пример: Фирма ДООЕЛ"
+               type="text" class="form-control">
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="email" class="col-3 col-form-label">Е-Адреса</label>
+    <div class="col-9">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="fa fa-at"></i>
+          </div>
+        </div>
+        <input formControlName="emailAddress" id="email" name="email"
+               placeholder="Пример: adresa.firma@gmail.com" type="text" class="form-control">
+      </div>
+      <div *ngIf="f.emailAddress.errors" class="invalid-input">
+        <div *ngIf="f.emailAddress.errors.email">Мора да внесете точна електронска адреса.</div>
+      </div>
+      <div *ngIf="doesEmailExist" class="invalid-input">
+        Електронската адреса веќе е регистрирана. <a routerLink="/login">Логирајте се</a> или одберете нова адреса.
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="password" class="col-3 col-form-label">Лозинка</label>
+    <div class="col-9">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="fa fa-lock"></i>
+          </div>
+        </div>
+        <input formControlName="password" id="password" name="password" type="password" class="form-control"
+               aria-describedby="passwordHelpBlock">
+      </div>
+      <span id="passwordHelpBlock" class="form-text text-muted">Мора да содржи повеќе од 8 карактери.</span>
+      <div *ngIf="f.password.errors" class="invalid-input">
+        <div *ngIf="f.password.errors.minlength">Внесовте невалидна лозинка.</div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="password" class="col-3 col-form-label">Повторете ја лозинката</label>
+    <div class="col-9">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="fa fa-lock"></i>
+          </div>
+        </div>
+        <input formControlName="confirmPassword" id="confirmPassword" name="password" type="password"
+               class="form-control" aria-describedby="passwordHelpBlock">
+      </div>
+      <span id="confirmdPasswordHelpBlock" class="form-text text-muted">Повторете ја истата лозинка што ја внесовте погоре.</span>
+      <div *ngIf="f.confirmPassword.errors" class="invalid-input">
+        <div *ngIf="f.confirmPassword.errors.mustMatch">Лозинките не се исти!</div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="phone_number" class="col-3 col-form-label">Телефонски Број</label>
+    <div class="col-9">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">+389</div>
+        </div>
+        <input OnlyNumber="true" formControlName="phoneNumber" id="phone_number" name="phone_number" type="text"
+               class="form-control" aria-describedby="numberHelpBlock">
+      </div>
+      <span id="numberHelpBlock" class="form-text text-muted">Мора да внесете валиден телефонски број, фиксен
+                или
+                мобилен.</span>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="home_address" class="col-3 col-form-label">Адреса на живеење</label>
+    <div class="col-9">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="fa fa-home"></i>
+          </div>
+        </div>
+        <input formControlName="address" id="home_address" name="home_address"
+               placeholder="Пример: ул. Рузвелтова 3а" type="text" class="form-control">
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="zip_code" class="col-3 col-form-label">Поштенски Број</label>
+    <div class="col-9">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="fa fa-envelope"></i>
+          </div>
+        </div>
+        <input formControlName="zipCode" id="zip_code" name="zip_code" type="number" class="form-control">
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="city" class="col-3 col-form-label">Град</label>
+    <div class="col-9">
+      <select formControlName="city" id="city" name="city" class="custom-select"
+              aria-describedby="cityHelpBlock">
+        <option *ngFor="let city of cities | enumToArray" [value]="city">{{cities[city]}}</option>
+      </select>
+      <span id="cityHelpBlock" class="form-text text-muted">Одберете во кој град живеете, односно
+                општина.</span>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="company_description" class="col-3 col-form-label">Опис на фирмата</label>
+    <div class="col-9">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="fa fa-edit"></i>
+          </div>
+        </div>
+        <textarea formControlName="description" id="company_description" name="company_description" class="form-control"
+                  rows="4"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="offset-3 col-9">
+      <button class="btn btn-primary btn-block text-white btn-user" type="submit"
+              [disabled]="!registerForm.valid">Регистрација
+      </button>
+      <a class="btn btn-secondary btn-block text-white btn-user" type="submit" routerLink="/">Назад</a>
+      <hr>
+    </div>
+  </div>
+</form>

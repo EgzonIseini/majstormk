@@ -1,0 +1,74 @@
+<div class="card shadow">
+  <div class="card-header py-3">
+    <button class="btn btn-secondary d-inline mr-3 rounded-circle" type="button" (click)="goBack()">
+      <i class="fa fa-arrow-left"></i>
+    </button>
+    <p class="text-primary d-inline m-0 font-weight-bold">Постави нов оглас</p>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="newOglasForm" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="listing_name"><strong>Име на оглас</strong></label>
+            <input id="listing_name"
+                   class="form-control"
+                   type="text"
+                   placeholder="Пример: Поставување ламинат во соба 10х8м2"
+                   name="listing_name"
+                   formControlName="name">
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="price"><strong>Стартна цена</strong></label>
+            <input id="price"
+                   class="form-control"
+                   type="number"
+                   placeholder=""
+                   name="price"
+                   formControlName="price">
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="city"><strong>Град</strong></label>
+            <select formControlName="city" id="city" name="city" class="custom-select"
+                    aria-describedby="cityHelpBlock">
+              <option *ngFor="let city of cities | enumToArray" [value]="city">{{cities[city]}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group"><label for="dueDate"><strong>Траење на лицитацијата</strong></label>
+            <input
+              formControlName="dueDate"
+              id="dueDate"
+              name="dueDate"
+              type="text"
+              class="form-control"
+              bsDatepicker
+              [minDate]="today"
+              [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY',
+              containerClass: 'theme-dark-blue',
+              adaptivePosition: true,
+              showWeekNumbers: false}">
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="description" class="col-3 col-form-label"><strong>Детален опис на огласот</strong></label>
+        <div class="col-12">
+          <textarea formControlName="description" id="description" name="description" class="form-control"
+                    rows="2"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button class="btn btn-primary btn-lg" type="submit">Зачувај</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+<div class="card shadow" *ngIf="listing">
+  <div class="card-header py-3">
+    <button class="btn btn-secondary d-inline mr-3 rounded-circle" type="button" (click)="goBack()"><i class="fa fa-arrow-left"></i>
+    </button>
+    <p class="text-primary d-inline m-0 font-weight-bold">{{listing.name}}({{listing.id}})</p>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 col-lg-4 d-xl-flex justify-content-xl-center">
+        <img class="img-fluid img-thumbnail"
+             src="assets/img/dogs/image3.jpeg"
+             width="150px" height="300px"></div>
+      <div class="col-12 col-lg-8">
+        <h2>{{listing.name}}</h2>
+        <p>{{listing.description}}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-lg-4 flex-fill justify-content-xl-center">
+        <ul class="list-group mt-4">
+          <li class="list-group-item">
+            <span><strong>Поставено од:</strong>{{listing.userId.firstName + ' ' + listing.userId.lastName}}</span></li>
+          <li class="list-group-item"><span><strong>Град:</strong>{{city[listing.city]}}</span></li>
+          <li class="list-group-item"><span><strong>Стартна цена:</strong>{{listing.price}}</span></li>
+          <li class="list-group-item"><span><strong>Краен рок:</strong>{{listing.dueDate | dateToString}}</span></li>
+          <li class="list-group-item list-group-item-success" *ngIf="deal">
+            <strong class="d-block">Договор постигнат:</strong><span>Постигнат договор со <strong>{{deal.user.firstName + ' ' + deal.user.lastName.charAt(0) + '.'}}</strong></span>
+          </li>
+          <li class="list-group-item list-group-item-danger" *ngIf="listing.active == false && !deal">
+            <span class="d-block">Огласот е завршен неуспешно, со ниеден договор.</span>
+          </li>
+        </ul>
+      </div>
+      <div class="col-12 col-lg-8 d-xl-flex flex-column justify-content-xl-center align-items-xl-center">
+        <h3 class="align-self-start">Локација</h3>
+        <iframe allowfullscreen="" frameborder="0" src="https://cdn.bootstrapstudio.io/placeholders/map.html"
+                width="80%" height="300"></iframe>
+      </div>
+    </div>
+    <app-view-listing-offers-table [oglas]="listing" [loggedInUser]="loggedInUser" (onOfferAcceptEmit)="onOfferAccept($event)" (removeOffer)="onOfferRemove($event)"></app-view-listing-offers-table>
+
+
+    <ng-template #acceptOfferModal *ngIf="listing.active == true">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Дали сте сигурни?</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Дали сте сигурни дека сакате да вклучите договор со <strong>{{offerAccept.madeBy.firstName}}</strong>&nbsp;за следната понуда:&nbsp;<strong>{{offerAccept.description}}</strong>&nbsp;?<br></p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" (click)="onModalDecline()">Назад</button>
+        <button class="btn btn-primary" type="button" (click)="onOfferAcceptModalAccept()">Да</button>
+      </div>
+    </ng-template>
+
+
+    <ng-template #removeOfferModal *ngIf="listing.active === true">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Дали сте сигурни?</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Дали сте сигурни дека сакате дека сакате да ја избришете ваша понуда: <strong>{{this.offerToRemove.description}}</strong>?<br></p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" (click)="onModalDecline()">Назад</button>
+        <button class="btn btn-primary" type="button" (click)="onOfferRemoveModalAccept()">Да</button>
+      </div>
+    </ng-template>
+
+  </div>
+</div>

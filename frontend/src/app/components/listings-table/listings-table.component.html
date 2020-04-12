@@ -1,0 +1,102 @@
+<div class="card shadow">
+  <div class="card-header py-3">
+    <p class="text-primary m-0 font-weight-bold">Мои огласи</p>
+  </div>
+  <div class="card-body">
+
+    <ul class="nav nav-tabs nav-fill mb-2">
+      <li class="nav-item"><a class="nav-link" [class.active]="activeTab === 'active'" (click)="onListingStateChange('active')">Активни</a></li>
+      <li class="nav-item"><a class="nav-link" [class.active]="activeTab === 'ended'" (click)="onListingStateChange('ended')">Успешни</a></li>
+      <li class="nav-item"><a class="nav-link" [class.active]="activeTab === 'unsuccessful'" (click)="onListingStateChange('unsuccessful')">Неуспешни</a></li>
+    </ul>
+    <div class="row" id="top">
+      <div class="col-md-6 text-nowrap">
+        <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+          <label>Прикажи&nbsp;
+            <select class="form-control-sm form-control form-control-sm custom-select custom-select-sm"
+                    (change)="onTotalElementsToShowChange($event)">
+              <option value="10" selected="">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>&nbsp;
+          </label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="text-md-right dataTables_filter" id="dataTable_filter">
+          <label>
+            <input class="form-control-sm form-control form-control-sm" type="search" aria-controls="dataTable"
+                   placeholder="Search" [formControl]="searchOglas"></label></div>
+      </div>
+    </div>
+    <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+      <div *ngIf="!pagedListing">Retrieving your data...</div>
+      <table class="table dataTable my-0" id="dataTable" *ngIf="pagedListing">
+        <thead>
+        <tr>
+          <th>Име</th>
+          <th>Град</th>
+          <th>Краен рок</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let listing of pagedListing.content">
+          <td>{{listing.name}}</td>
+          <td>{{city[listing.city]}}</td>
+          <td>{{listing.dueDate | dateToString}}</td>
+          <td>
+            <a class="btn btn-primary mr-2" type="button" routerLink="/oglasi/{{listing.id}}">Повеќе</a>
+            <button class="btn btn-danger" (click)="onOglasRemove(listing)"><span class="fa fa-trash"></span></button>
+          </td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+          <td><strong>Име</strong></td>
+          <td><strong>Град</strong></td>
+          <td><strong>Краен рок</strong></td>
+          <td><strong></strong></td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="row" *ngIf="pagedListing">
+      <div class="col-md-4 align-self-center">
+        <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Прикажувам:
+          {{pagedListing.totalElements == 0 ? pagedListing.number : pagedListing.number + 1 }} од
+          {{pagedListing.totalPages}}<br>Вкупно: {{pagedListing.totalElements}}</p>
+      </div>
+      <div class="col-md-8 d-flex justify-content-end">
+        <pagination
+          [totalItems]="pagedListing.totalElements"
+          [rotate]="true"
+          [maxSize]="5"
+          [itemsPerPage]="pagesToShow$.getValue()"
+          (pageChanged)="onPageSelected($event)"
+          nextText="&raquo;"
+          previousText="&laquo;">
+        </pagination>
+      </div>
+    </div>
+
+    <a class="btn btn-primary btn-block mt-3" routerLink="/oglasi/new">Нов Оглас</a>
+  </div>
+</div>
+
+<ng-template #removeOglasModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Дали сте сигурни?</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Дали сте сигурни дека сакате дека го избришете огласот: <strong>{{this.oglasToRemove.name}}</strong>?<br></p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" type="button" (click)="modalRef.hide()">Назад</button>
+    <button class="btn btn-primary" type="button" (click)="onOglasRemoveModalAccept()">Да</button>
+  </div>
+</ng-template>

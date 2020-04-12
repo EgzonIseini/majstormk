@@ -1,0 +1,123 @@
+<h3 class="text-dark mb-4">Ваш профил</h3>
+<div class="row mb-3">
+  <div class="col-lg-4">
+    <div class="card mb-3">
+      <div class="card-body text-center shadow">
+        <img class="rounded-circle mb-3 mt-4" src="https://picsum.photos/250/250" width="160" height="160">
+        <div class="mb-3">
+          <a class="btn btn-primary" type="button" routerLink="./password">Смени ја лозинката</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-8">
+    <div class="row">
+      <div class="col">
+        <div class="card shadow mb-3" *ngIf="user">
+          <div class="card-header py-3">
+            <p class="text-primary m-0 font-weight-bold">Подесувања</p>
+          </div>
+          <div class="card-body">
+
+            <div class="alert alert-success" *ngIf="modifiedSuccess === true">Вашите измени беа успешни!</div>
+            <div class="alert alert-danger" *ngIf="modifiedFail === true">Настана грешка при измена на вашите податоци. Пробајте пак.</div>
+
+            <form [formGroup]="modifyForm" (ngSubmit)="onSubmit()">
+              <div class="form-row">
+                <div class="col">
+                  <div class="form-group"><label for="first_name"><strong>Име</strong></label>
+                    <input id="first_name"
+                           class="form-control"
+                           type="text"
+                           placeholder="Вашето име"
+                           name="first_name"
+                           formControlName="firstName">
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-group"><label for="last_name"><strong>Презиме</strong></label>
+                    <input id="last_name"
+                           class="form-control"
+                           type="text"
+                           placeholder="Вашето презиме"
+                           name="last_name"
+                           formControlName="lastName">
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col">
+                  <div class="form-group">
+                    <label for="email"><strong>Е-Адреса</strong></label>
+                    <input id="email" formControlName="emailAddress"
+                           class="form-control" type="text" placeholder="Вашата електронска адреса" name="email">
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-group"><label for="dateOfBirth"><strong>Датум на раѓање</strong></label>
+                    <div class="col-12">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text">
+                            <i class="fa fa-birthday-cake"></i>
+                          </div>
+                        </div>
+                        <input
+                          formControlName="dateOfBirth"
+                          id="dateOfBirth"
+                          name="dateOfBirth"
+                          type="text"
+                          class="form-control"
+                          bsDatepicker
+                          [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', containerClass: 'theme-dark-blue' }">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group"><label for="home_address">
+                <strong>Адреса на живеење</strong></label>
+                <input id="home_address"
+                       class="form-control"
+                       type="text"
+                       placeholder="Вашата адреса"
+                       name="home_address"
+                       formControlName="address">
+              </div>
+              <div class="form-row">
+                <div class="col-6">
+                  <div class="form-group"><label for="city">
+                    <strong>City</strong></label>
+                    <select formControlName="city" id="city" name="city" class="custom-select"
+                            aria-describedby="cityHelpBlock">
+                      <option *ngFor="let city of cities | enumToArray" [value]="city">{{cities[city]}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group"><label for="zip_code"><strong>Поштенски Број</strong></label>
+                    <input id="zip_code" class="form-control" type="text" placeholder="" name="zip_code"
+                           formControlName="zipCode" OnlyNumber="true"></div>
+                </div>
+              </div>
+              <div class="form-group"><label for="phone_number">
+                <strong>Телефонски број</strong></label>
+                <input id="phone_number"
+                       class="form-control"
+                       type="text"
+                       placeholder="Ваш телефонски број"
+                       name="phone_number"
+                       formControlName="phoneNumber"
+                       OnlyNumber="true">
+              </div>
+              <div class="form-group">
+                <button class="btn btn-primary" type="submit">Зачувај</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

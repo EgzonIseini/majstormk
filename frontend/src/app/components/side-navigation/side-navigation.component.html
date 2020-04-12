@@ -1,0 +1,28 @@
+<nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0"
+[ngClass]="{'toggled': isToggled}">
+  <div class="container-fluid d-flex flex-column p-0">
+    <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+      <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-hammer"></i></div>
+      <div class="sidebar-brand-text mx-3"><span>Мајстор.мк</span></div>
+    </a>
+    <hr class="sidebar-divider my-0">
+    <ul class="nav navbar-nav text-light" id="accordionSidebar">
+      <li class="nav-item" role="presentation"><a class="nav-link" routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i
+            class="fas fa-home"></i><span>Почетна</span></a></li>
+      <li *ngIf="!authenticationService.isUserLoggedIn()"
+          class="nav-item" role="presentation"><a class="nav-link" routerLink="register" routerLinkActive="active"><i
+        class="fas fa-user-circle"></i><span>Регистрација</span></a></li>
+      <div *ngIf="authenticationService.isUserLoggedIn()">
+        <li class="nav-item" role="presentation"><a class="nav-link" routerLink="oglasi" routerLinkActive="active"><i
+          class="fas fa-align-justify"></i><span>Огласи</span></a></li>
+        <li class="nav-item" role="presentation"><a class="nav-link" routerLink="offers" routerLinkActive="active"><i
+          class="fas fa-wrench"></i><span>Понуди</span></a></li>
+        <li class="nav-item" role="presentation"><a class="nav-link" routerLink="deals" routerLinkActive="active"><i
+          class="fas fa-handshake"></i><span>Договори</span></a></li>
+      </div>
+    </ul>
+    <div class="text-center d-none d-md-inline">
+      <button class="btn rounded-circle border-0" id="sidebarToggle" type="button" (click)="onSideNavToggle()"></button>
+    </div>
+  </div>
+</nav>

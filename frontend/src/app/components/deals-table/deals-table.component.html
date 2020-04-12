@@ -1,0 +1,70 @@
+<div class="row" id="top">
+  <div class="col-md-6 text-nowrap">
+    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+      <label>Прикажи&nbsp;
+        <select class="form-control-sm form-control form-control-sm custom-select custom-select-sm"
+                (change)="onTotalElementsToShowChange($event)">
+          <option value="10" selected="">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>&nbsp;
+      </label>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="text-md-right dataTables_filter" id="dataTable_filter">
+      <label>
+        <input class="form-control-sm form-control form-control-sm" type="search" aria-controls="dataTable"
+               placeholder="Search" [formControl]="searchDeal"></label></div>
+  </div>
+</div>
+<div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+  <div *ngIf="!pagedDeal">Retrieving your data...</div>
+  <table class="table dataTable my-0" id="dataTable" *ngIf="pagedDeal">
+    <thead>
+    <tr>
+      <th>За оглас</th>
+      <th>На датум</th>
+      <th>Вклучено со</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let deal of pagedDeal.content">
+      <td>{{deal.listing.name}}</td>
+      <td>{{deal.date | dateToString}}</td>
+      <td>{{deal.company.firstName}}<br>{{deal.company.lastName}}</td>
+      <td>
+        <button class="btn btn-primary" type="button">Повеќе</button>
+      </td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+      <th>За оглас</th>
+      <th>На датум</th>
+      <th>Вклучено со</th>
+      <td><strong></strong></td>
+    </tr>
+    </tfoot>
+  </table>
+</div>
+<div class="row" *ngIf="pagedDeal">
+  <div class="col-md-4 align-self-center">
+    <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Прикажувам:
+      {{pagedDeal.totalElements == 0 ? pagedDeal.number : pagedDeal.number + 1 }} од
+      {{pagedDeal.totalPages}}<br>Вкупно: {{pagedDeal.totalElements}}</p>
+  </div>
+  <div class="col-md-8 d-flex justify-content-end">
+    <pagination
+      [totalItems]="pagedDeal.totalElements"
+      [rotate]="true"
+      [maxSize]="5"
+      [itemsPerPage]="pagesToShow$.getValue()"
+      (pageChanged)="onPageSelected($event)"
+      nextText="&raquo;"
+      previousText="&laquo;">
+    </pagination>
+  </div>
+</div>

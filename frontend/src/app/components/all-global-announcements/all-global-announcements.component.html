@@ -1,0 +1,49 @@
+<div class="container-fluid" *ngIf="pagedAnnouncements != undefined">
+  <div class="row">
+    <div id="top" class="list-group d-block w-100">
+      <a class="d-flex align-items-center list-group-item" *ngFor="let announcement of pagedAnnouncements.content"
+         [routerLink]="['', 'oglasi', announcement.entityId]">
+        <div class="mr-3">
+          <div class="bg-primary icon-circle" [class]="announcement.backgroundColor"
+               [innerHTML]="announcement.iconHTML | safeHtml"></div>
+        </div>
+        <div>
+          <span class="small text-gray-500"
+                *ngIf="announcement.timestamp">{{announcement.timestamp.toDateString()}}</span>
+          <p [innerHTML]="announcement.message | safeHtml" class="text-dark"></p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="row mt-2 mb-5 d-flex align-content-center">
+    <div class="col-md-2 align-self-center">
+      <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Прикажувам:
+        {{pagedAnnouncements.totalElements == 0 ? pagedAnnouncements.number : pagedAnnouncements.number + 1 }} од
+        {{pagedAnnouncements.totalPages}}<br>Вкупно: {{pagedAnnouncements.totalElements}}</p>
+    </div>
+    <div class="col-md-3 align-self-center">
+      <label>Прикажи&nbsp;
+        <select
+          class="form-control-sm form-control form-control-sm custom-select custom-select-sm"
+          (change)="onTotalElementsToShowChange($event)">
+          <option value="10" selected="">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>&nbsp;
+      </label>
+    </div>
+    <div class="col-md-7 d-flex justify-content-end">
+      <pagination
+        [totalItems]="pagedAnnouncements.totalElements"
+        [rotate]="true"
+        [maxSize]="5"
+        [itemsPerPage]="pagesToShow$.getValue()"
+        (pageChanged)="onPageSelected($event)"
+        nextText="&raquo;"
+        previousText="&laquo;">
+      </pagination>
+    </div>
+  </div>
+</div>

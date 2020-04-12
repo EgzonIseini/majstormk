@@ -1,0 +1,105 @@
+<div class="card shadow">
+  <div class="card-header py-3">
+    <p class="text-primary m-0 font-weight-bold">Мои огласи</p>
+  </div>
+  <div class="card-body">
+    <ul class="nav nav-tabs nav-fill mb-2">
+      <li class="nav-item"><a class="nav-link" [class.active]="activeTab === 'all'"
+                              (click)="onListingStateChange('all')">Сите</a></li>
+      <li class="nav-item"><a class="nav-link" [class.active]="activeTab === 'personal'"
+                              (click)="onListingStateChange('personal')">Мои</a></li>
+    </ul>
+    <div class="row" id="top">
+      <div class="col-md-6 text-nowrap">
+        <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+          <label>Прикажи&nbsp;
+            <select class="form-control-sm form-control form-control-sm custom-select custom-select-sm"
+                    (change)="onTotalElementsToShowChange($event)">
+              <option value="10" selected="">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>&nbsp;
+          </label>
+        </div>
+      </div>
+      <div class="col-md-6 d-xl-flex justify-content-xl-end" *ngIf="oglas.active == true">
+        <button class="btn btn-outline-primary" type="button" (click)="newOfferToggled = !newOfferToggled"
+                [attr.aria-expanded]="!isCollapsed" aria-controls="collapseBasic">
+          <span *ngIf="!newOfferToggled">Прати нова понуда</span>
+          <span *ngIf="newOfferToggled">Врати се назад</span>
+        </button>
+      </div>
+    </div>
+    <div id="newOffer" class="p-3 mt-4 mb-5 shadow rounded" [collapse]="!newOfferToggled" [isAnimated]="true">
+      <div class="row">
+        <div class="col-sm-12">
+          <label for="offer-details">Внесете информации во врска со вашата понуда:</label>
+          <textarea [formControl]="offerDetails" id="offer-details" class="form-control-lg" name="offer-details"
+                    rows="5" style="width: 100%;">
+          </textarea>
+        </div>
+        <div class="col-sm-12">
+          <label for="offer-price">Понудена цена</label>
+          <input [formControl]="price" id="offer-price" class="form-control" name="offer-price" [max]="oglas.price"
+                 type="number" [value]="oglas.price">
+          <small class="text-danger">* Понудената цена мора да биде помала од поставената во огласот.</small>
+        </div>
+        <div class="col-sm-12 d-xl-flex justify-content-xl-center align-items-xl-center mt-3">
+          <button class="btn btn-primary btn-block d-block" type="button" (click)="onSubmitOffer()">Внеси</button>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+      <div *ngIf="!pagedOffers">Retrieving your data...</div>
+      <table class="table dataTable my-0" id="dataTable" *ngIf="pagedOffers">
+        <thead>
+        <tr>
+          <th>Понуда</th>
+          <td><strong>Понудена Цена</strong></td>
+          <th>Поставена од</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let offer of pagedOffers.content">
+          <td>{{offer.description}}</td>
+          <td>{{offer.offeredPrice}}</td>
+          <td>{{offer.madeBy.firstName + ' ' + offer.madeBy.lastName}}</td>
+          <td *ngIf="oglas.active === true">
+            <button *ngIf="(loggedInUser.id === oglas.userId.id)"class="btn btn-primary mr-2" (click)="onOfferAccept(offer)">Вклучи договор</button>
+            <button *ngIf="(loggedInUser.id === offer.madeBy.id)" class="btn btn-danger" (click)="onRemoveOffer(offer)"><span class="fa fa-trash"></span></button>
+          </td>
+
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+          <td><strong>Понуда</strong></td>
+          <td><strong>Понудена Цена</strong></td>
+          <td><strong>Поставена од</strong></td>
+          <td><strong></strong></td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="row" *ngIf="pagedOffers">
+      <div class="col-md-4 align-self-center">
+        <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Прикажувам:
+          {{pagedOffers.totalElements == 0 ? pagedOffers.number : pagedOffers.number + 1 }} од
+          {{pagedOffers.totalPages}}<br>Вкупно: {{pagedOffers.totalElements}}</p>
+      </div>
+      <div class="col-md-8 d-flex justify-content-end">
+        <pagination
+          [totalItems]="pagedOffers.totalElements"
+          [rotate]="true"
+          [maxSize]="5"
+          [itemsPerPage]="pagesToShow$.getValue()"
+          (pageChanged)="onPageSelected($event)"
+          nextText="&raquo;"
+          previousText="&laquo;">
+        </pagination>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,105 @@
+<div class="container-fluid">
+  <div class="d-sm-flex justify-content-between align-items-center mb-4">
+    <h3 class="text-dark mb-0">Сите Огласи</h3>
+  </div>
+  <div class="row mb-4" *ngIf="pagedListing">
+    <div class="col-12 mb-2 mb-lg-5">
+      <div class="card shadow">
+        <div class="card-header py-3">
+          <p class="m-0 font-weight-bold">Огласи</p>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3 text-nowrap">
+              <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+                <label>Прикажи&nbsp;
+                  <select
+                    class="form-control-sm form-control form-control-sm custom-select custom-select-sm"
+                    (change)="onTotalElementsToShowChange($event)">
+                    <option value="10" selected="">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>&nbsp;
+                </label>
+              </div>
+            </div>
+            <div class="col-md-3 text-nowrap">
+              <div id="sortBySelectorDiv" class="dataTables_length" aria-controls="dataTable">
+                <label>Подреди по&nbsp;
+                  <select
+                    class="form-control-sm form-control form-control-sm custom-select custom-select-sm"
+                    (change)="onSortedByChange($event)">
+                    <option value="name" selected="">Име</option>
+                    <option value="city">Град</option>
+                    <option value="postedBy">Поставено од</option>
+                    <option value="dueDate">Краен рок</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="text-md-right dataTables_filter" id="dataTable_filter">
+                <label><input class="form-control-sm form-control form-control-sm" type="search"
+                              aria-controls="dataTable" placeholder="Побарај" [formControl]="searchOglas"></label>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+            <table class="table dataTable my-0" id="dataTable">
+              <thead>
+              <tr>
+                <th>Име на оглас</th>
+                <th>Град</th>
+                <th>Краен рок</th>
+                <th>Поставено од</th>
+                <th>Очекувана цена</th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody >
+              <tr *ngFor="let listing of pagedListing.content" [class.table-success]="listing.active === false">
+                <td>{{listing.name}}</td>
+                <td>{{city[listing.city]}}</td>
+                <td>{{listing.active ? listing.dueDate : "ЗАВРШЕНА"}}</td>
+                <td>{{(listing.userId?.firstName + ' ' + listing.userId?.lastName)}}</td>
+                <td>{{listing.price}}</td>
+                <td>
+                  <a class="btn btn-primary" type="button" routerLink="/oglasi/{{listing.id}}">Повеќе</a>
+                </td>
+              </tr>
+              </tbody>
+              <tfoot>
+              <tr>
+                <td><strong>Име</strong></td>
+                <td><strong>Град</strong></td>
+                <td><strong>Краен рок</strong></td>
+                <td><strong>Поставено од</strong></td>
+                <td><strong>Очекувана цена</strong></td>
+              </tr>
+              </tfoot>
+            </table>
+          </div>
+          <div class="row">
+            <div class="col-md-4 align-self-center">
+              <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Прикажувам:
+                {{pagedListing.totalElements == 0 ? pagedListing.number : pagedListing.number + 1 }} од
+                {{pagedListing.totalPages}}<br>Вкупно: {{pagedListing.totalElements}}</p>
+            </div>
+            <div class="col-md-8 d-flex justify-content-end">
+              <pagination
+                [totalItems]="pagedListing.totalElements"
+                [rotate]="true"
+                [maxSize]="5"
+                [itemsPerPage]="pagesToShow$.getValue()"
+                (pageChanged)="onPageSelected($event)"
+                nextText="&raquo;"
+                previousText="&laquo;">
+              </pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<div id="wrapper">
+
+  <app-side-navigation></app-side-navigation>
+
+  <div class="d-flex flex-column" id="content-wrapper">
+    <div id="content">
+
+      <app-top-navigation></app-top-navigation>
+
+      <div class="container-fluid" id="page-top">
+
+        <router-outlet></router-outlet>
+
+      </div>
+    </div>
+    <footer class="bg-white sticky-footer">
+      <div class="container my-auto">
+        <div class="text-center my-auto copyright"><span>Copyright © Мајстор.мк 2020</span></div>
+      </div>
+    </footer>
+
+    <notifier-container></notifier-container>
+
+  </div>
+  <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+</div>

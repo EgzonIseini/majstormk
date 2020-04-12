@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="card shadow-lg o-hidden border-0 my-5">
+    <div class="card-body d-xl-flex justify-content-xl-center p-0">
+      <div class="flex-shrink-0 p-5" style="width: 80%;">
+        <div class="text-center">
+          <h4 class="text-dark mb-4">Регистрација</h4>
+        </div>
+        <ul class="nav nav-pills nav-fill mb-5">
+          <li class="nav-item"><a class="nav-link" routerLink="private" routerLinkActive="active">Физичко Лице</a></li>
+<!--          <li class="nav-item"><a class="nav-link disabled" routerLink="company" routerLinkActive="active">Фирма</a></li>-->
+        </ul>
+
+        <router-outlet></router-outlet>
+
+        <div class="text-center"><a class="small" routerLink="/forgot-password">Ја заборави лозинката?</a></div>
+        <div class="text-center"><a class="small" routerLink="/login">Веќе имаш сметка? Логирај се!</a></div>
+      </div>
+    </div>
+  </div>
+</div>
