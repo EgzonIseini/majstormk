@@ -133,6 +133,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "majstormk"
+    }
+  },
+  "defaultProject": "majstormk",
+  "cli": {
+    "analytics": false
+  }
 }

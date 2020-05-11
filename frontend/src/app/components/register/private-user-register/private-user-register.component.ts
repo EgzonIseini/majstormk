@@ -66,7 +66,7 @@ export class PrivateUserRegisterComponent implements OnInit {
         }
 
         const userAccount = this.registerForm.value;
-        userAccount.dateOfBirth = formatDate(this.registerForm.value.dateOfBirth, 'dd/MM/yyyy', 'en', '+0100');
+        userAccount.dateOfBirth = formatDate(this.registerForm.value.dateOfBirth, 'dd/MM/yyyy', 'en');
         userAccount.id = 0;
         userAccount.roles = [{placeholder: 'placeholder'}];
 

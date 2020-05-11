@@ -3,7 +3,6 @@ import {City} from '../../model/City';
 import {UserService} from '../../services/user.service';
 import {PrivateUser} from '../../model/users/PrivateUser';
 import {FormBuilder, Validators} from '@angular/forms';
-import {MustMatch} from '../../validators/must-match.validator';
 import {formatDate} from '@angular/common';
 
 @Component({
@@ -38,19 +37,24 @@ export class ProfileSettingsComponent implements OnInit {
 
     ngOnInit(): void {
         this.userService.getPrivateUser().subscribe(user => {
-            user.dateOfBirth = new Date(user.dateOfBirth);
             this.user = user;
             this.modifyForm.patchValue(user);
+            //this.modifyForm.controls.dateOfBirth.patchValue(this.stringToDate(user.dateOfBirth))
         });
     }
 
     onSubmit() {
         const userAccount = {...this.user, ...this.modifyForm.value};
-        userAccount.dateOfBirth = formatDate(userAccount.dateOfBirth, 'dd/MM/yyyy', 'en', '+0100');
+        userAccount.dateOfBirth = formatDate(userAccount.dateOfBirth, 'dd/MM/yyyy', 'en');
         this.userService.modifyPrivateUser(userAccount).subscribe(
             success => this.modifiedSuccess = true,
             fail => this.modifiedFail = true
         );
+    }
+
+    stringToDate(date: string): Date {
+        const dateParts = date.substring(0, 10).split('/');
+        return new Date(+dateParts[2], +dateParts[1] - 1, +dateParts[0]);
     }
 
 }
