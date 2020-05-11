@@ -1,0 +1,45 @@
+### Create Private User
+POST http://localhost:8080/users/private
+Content-Type: application/json
+
+{"id": 0, "firstName":"Besar", "lastName":"Iseini", "password":"fortnite", "emailAddress":"besar@epic.com", "phoneNumber":"11111", "dateOfBirth":"2006-07-20", "address":"Zagorje 123", "city":"Kicevo", "zipCode": 2300}
+
+### Get User By ID
+GET http://localhost:8080/users/1
+
+### Get All Users
+GET http://localhost:8080/users
+
+### Create Company User
+POST http://localhost:8080/users/company
+Content-Type: application/json
+
+{"id": 0, "name":"Kompanija1",  "password":"copass", "emailAddress":"best@kompanija.ever", "phoneNumber":"5321", "address":"Skupi", "city":"Skopje", "zipCode": 1000, "description": "Najdobra kompanija EVER!"}
+
+### Modify User
+PUT http://localhost:8080/users/private/1
+Content-Type: application/json
+
+{"id":0, "firstName":"John", "lastName":"Doe", "password":"jdoe", "emailAddress":"john@doe.com", "phoneNumber":"43121", "dateOfBirth":"2006-07-20", "address":"West Street", "city":"Bitola", "zipCode": 1302}
+
+###
+PATCH http://localhost:8080/users/1/follows/2{{}}
+
+### Get Followers
+GET http://localhost:8080/users/1/followers
+
+### Get Following
+GET http://localhost:8080/users/1/following
+
+### Check if email exists
+POST http://localhost:8080/users/email/exists
+Content-Type: application/json
+
+{ "email": "john@doe.com" }
+
+###
+
+
+
+
+
